@@ -13,6 +13,7 @@ namespace bot
         static IWebDriver driver;
         public static void Main(string[] args)
         {
+            // Creates Driver
             driver = new Driver();
             words = new WordsManager();
 
@@ -21,20 +22,25 @@ namespace bot
 
         static void loadSite(string site)
         {
+            // Loads twitter
+            
             driver.Url = "https://" + site;
             Thread.Sleep(3000);
 
             login("/compose/tweet");
         }
-
+        
+        // Logs in the bot
         static void login(string url)
         {
             string user = "USER HERE";
             string pass = "PASSWORD HERE";
-
+            
+            // Finds the username and password inputs
             IWebElement userInput = driver.FindElement(By.Name("session[username_or_email]"));
             IWebElement passInput = driver.FindElement(By.Name("session[password]"));
-
+            
+            // fills those inputs with the username and password
             userInput.SendKeys(user);
             passInput.SendKeys(pass);
 
@@ -50,16 +56,23 @@ namespace bot
 
             for (int i = 0; i < 1000; i++)
             {
+                // Selects a random word
                 Random randomCountry = new Random();
                 int country = randomCountry.Next(0, words.countries.Length);
-
+                
+                // Goes to compose tweet page
                 driver.Url = "https://twitter.com" + url;
                 Thread.Sleep(4000);
+                
+                // Finds tweet input
                 IWebElement tweetInput = driver.FindElement(By.XPath("//*[@id='react-root']/div/div/div[1]/div[2]/div/div/div/div[2]/div[2]/div/div[3]/div/div/div/div[1]/div/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div/div/div/div[1]/div/div/div/div[2]/div/div/div/div/span/br"));
                 string text = country.ToString();
+                
+                // Fills the tweet input
                 tweetInput.SendKeys("[TWEET: " + (i+1) + "]: " + words.countries[country]);
                 Thread.Sleep(3000);
-
+                   
+                // Clicks the tweet button
                 IWebElement tweetButton = driver.FindElement(By.XPath("//*[@id='react-root']/div/div/div[1]/div[2]/div/div/div/div[2]/div[2]/div/div[3]/div/div/div/div[1]/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[4]"));
                 tweetButton.Click();
                 Thread.Sleep(3000);
