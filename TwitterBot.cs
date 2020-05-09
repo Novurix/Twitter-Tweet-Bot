@@ -8,14 +8,13 @@ namespace bot
 {
     public class TwitterBot
     {
-        static WordsManager countries;
-        static string[] previousCountries;
+        static WordsManager words;
 
         static IWebDriver driver;
         public static void Main(string[] args)
         {
             driver = new Driver();
-            countries = new WordsManager();
+            words = new WordsManager();
 
             loadSite("twitter.com");
         }
@@ -52,13 +51,13 @@ namespace bot
             for (int i = 0; i < 1000; i++)
             {
                 Random randomCountry = new Random();
-                int country = randomCountry.Next(0, countries.countries.Length);
+                int country = randomCountry.Next(0, words.countries.Length);
 
                 driver.Url = "https://twitter.com" + url;
                 Thread.Sleep(4000);
                 IWebElement tweetInput = driver.FindElement(By.XPath("//*[@id='react-root']/div/div/div[1]/div[2]/div/div/div/div[2]/div[2]/div/div[3]/div/div/div/div[1]/div/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div/div/div/div[1]/div/div/div/div[2]/div/div/div/div/span/br"));
                 string text = country.ToString();
-                tweetInput.SendKeys("[TWEET: " + (i+1) + "]: " + countries.countries[country]);
+                tweetInput.SendKeys("[TWEET: " + (i+1) + "]: " + words.countries[country]);
                 Thread.Sleep(3000);
 
                 IWebElement tweetButton = driver.FindElement(By.XPath("//*[@id='react-root']/div/div/div[1]/div[2]/div/div/div/div[2]/div[2]/div/div[3]/div/div/div/div[1]/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[4]"));
